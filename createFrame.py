@@ -6,9 +6,9 @@ from PIL import Image, ImageDraw, ImageFont
 from PIL.PngImagePlugin import PngInfo
 
 counter = 0
-WATERMARKED_DIR_NAME = 'watermarked'
+FRAMED_DIR_NAME = 'ready_frames'
 ORIGINAL_DIR_PATH = os.path.abspath('.')
-WATERMARKED_DIR_PATH = os.path.join(ORIGINAL_DIR_PATH, WATERMARKED_DIR_NAME)
+FRAMED_DIR_PATH = os.path.join(ORIGINAL_DIR_PATH, FRAMED_DIR_NAME)
 FONT_DIR_NAME = 'fonts'
 FONT_DIR_PATH = os.path.join(ORIGINAL_DIR_PATH, FONT_DIR_NAME)
 IMAGE_EXTENSIONS = ('.png', '.webp', '.jpg', '.jpeg')
@@ -75,9 +75,9 @@ def watermark(imagepath):
     return frame_image
     
 def make_directory():
-    isExist = os.path.exists(WATERMARKED_DIR_PATH)
+    isExist = os.path.exists(FRAMED_DIR_PATH)
     if not isExist:
-        os.makedirs(WATERMARKED_DIR_PATH)
+        os.makedirs(FRAMED_DIR_PATH)
 def watermark_all_originals():
     original_image_names = get_images(ORIGINAL_DIR_PATH)
     for imagename in original_image_names:
@@ -87,7 +87,7 @@ def watermark_all_originals():
         frame_image = watermark(imagepath)
         # metadata = get_exif(imagename)
         new_file_name = str(counter)+'.png'
-        save_file_path = os.path.join(WATERMARKED_DIR_PATH, new_file_name)
+        save_file_path = os.path.join(FRAMED_DIR_PATH, new_file_name)
         make_directory()
         frame_image.save(save_file_path)
         print(counter)
@@ -95,7 +95,7 @@ def watermark_all_originals():
 def rewatermark(filenames):
     for filename in filenames:
         full_filename = filename + RESULT_EXTENSION
-        path_to_old_wm_image = os.path.join(WATERMARKED_DIR_PATH, full_filename)
+        path_to_old_wm_image = os.path.join(FRAMED_DIR_PATH, full_filename)
         old_wm_image = Image.open(path_to_old_wm_image)
         print(path_to_old_wm_image)
         metadata = old_wm_image.text
